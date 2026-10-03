@@ -1,0 +1,12 @@
+{
+  "name": "docentes-api",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Punto de despliegue raíz para la API nativa de profesores.",
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "mysql2": "^3.11.5"
+  }
+}
