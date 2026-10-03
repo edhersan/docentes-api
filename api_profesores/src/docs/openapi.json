@@ -1,0 +1,220 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "API de Profesores",
+    "version": "1.0.0",
+    "description": "CRUD RESTful nativo para la tabla profesor."
+  },
+  "servers": [
+    {
+      "url": "/"
+    }
+  ],
+  "paths": {
+    "/api/profesores": {
+      "get": {
+        "summary": "Lista profesores",
+        "responses": {
+          "200": {
+            "description": "Lista de profesores",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Profesor"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Crea un profesor",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProfesorInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Profesor creado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Profesor"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          }
+        }
+      }
+    },
+    "/api/profesores/{id}": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/Id"
+        }
+      ],
+      "get": {
+        "summary": "Obtiene un profesor",
+        "responses": {
+          "200": {
+            "description": "Profesor encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Profesor"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      },
+      "put": {
+        "summary": "Actualiza un profesor",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProfesorUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Profesor actualizado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Profesor"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Elimina un profesor",
+        "responses": {
+          "204": {
+            "description": "Profesor eliminado"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "parameters": {
+      "Id": {
+        "name": "id",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+    "schemas": {
+      "Profesor": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "nombre": {
+            "type": "string",
+            "maxLength": 100
+          },
+          "apellido": {
+            "type": "string",
+            "maxLength": 100
+          },
+          "resumen": {
+            "type": "string"
+          },
+          "titulos": {
+            "type": "string"
+          },
+          "experiencia_laboral": {
+            "type": "string"
+          },
+          "url_imagen": {
+            "type": "string",
+            "maxLength": 2048,
+            "format": "uri"
+          }
+        }
+      },
+      "ProfesorInput": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Profesor"
+          }
+        ],
+        "required": [
+          "nombre",
+          "apellido",
+          "resumen",
+          "titulos",
+          "experiencia_laboral",
+          "url_imagen"
+        ]
+      },
+      "ProfesorUpdate": {
+        "$ref": "#/components/schemas/Profesor"
+      },
+      "Error": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "responses": {
+      "BadRequest": {
+        "description": "Solicitud inválida",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "NotFound": {
+        "description": "Profesor no encontrado",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      }
+    }
+  }
+}
