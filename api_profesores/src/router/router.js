@@ -23,6 +23,17 @@ function sendDocs(res) {
   res.end(html);
 }
 
+function sendHome(res) {
+  sendJson(res, 200, {
+    name: 'API de Profesores',
+    docs: '/docs',
+    openapi: '/openapi.json',
+    endpoints: {
+      profesores: '/api/profesores'
+    }
+  });
+}
+
 function sendOpenApi(res) {
   const specification = fs.readFileSync(OPENAPI_PATH, 'utf8');
   res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
@@ -33,6 +44,7 @@ async function route(req, res) {
   const url = new URL(req.url || '/', 'http://localhost');
   const pathname = url.pathname.replace(/\/+$/, '') || '/';
 
+  if (req.method === 'GET' && pathname === '/') return sendHome(res);
   if (req.method === 'GET' && pathname === '/docs') return sendDocs(res);
   if (req.method === 'GET' && pathname === '/openapi.json') return sendOpenApi(res);
 
